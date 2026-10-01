@@ -13,7 +13,7 @@ public class Main {
     public static void main(String[] args) {
 
         // 1. Scan the given directory for pictures files.
-        String folderPath = args.length > 0 ? args[0] : ".";
+        String folderPath = args.length > 0 ? args[0] : "."; // remplcer . par le chemin d'un dossier photo exemple "C:\\Users\\name\\Pictures"
         File dir = new File(folderPath);
         if (!dir.exists()) return;
         File[] files = dir.listFiles(new FilenameFilter() {
@@ -33,12 +33,31 @@ public class Main {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
-        // Display the first picture in the array
-        try {
-            BufferedImage img = ImageIO.read(files[0]);
-            frame.add(new JLabel(new ImageIcon(img)), SwingConstants.CENTER);
-        } catch (IOException e) {
-            // TODO something
+       // Display the first picture in the array
+        if (files != null && files.length > 0) {
+            try {
+                BufferedImage img = ImageIO.read(files[0]);
+
+                int maxWidth = frame.getWidth();
+                int maxHeight = frame.getHeight();
+
+                int imgWidth = img.getWidth();
+                int imgHeight = img.getHeight();
+
+                double widthRatio = (double) maxWidth / imgWidth;
+                double heightRatio = (double) maxHeight / imgHeight;
+                double ratio = Math.min(widthRatio, heightRatio);
+
+                int newWidth = (int) (imgWidth * ratio);
+                int newHeight = (int) (imgHeight * ratio);
+                java.awt.Image scaledImg = img.getScaledInstance(newWidth, newHeight, java.awt.Image.SCALE_SMOOTH);
+                frame.add(new JLabel(new ImageIcon(scaledImg)), SwingConstants.CENTER);
+
+            } catch (IOException e) {
+                System.out.println("Erreur lors de la lecture du fichier : " + e.getMessage());
+            }
+        } else {
+            frame.add(new JLabel("Aucune image n'a été trouvée dans votre dossier Pictures."), SwingConstants.CENTER);
         }
 
         frame.setVisible(true);
