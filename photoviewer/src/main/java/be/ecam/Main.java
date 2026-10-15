@@ -8,7 +8,7 @@ public class Main {
     public static void main(String[] args) {
 
         //Parcourir le répertoire donné à la recherche de fichiers images
-        String folderPath = args.length > 0 ? args[0] : "."; // Remplacez par le chemin de votre dossier d'images exemple C:\\Users\\name\\Pictures
+        String folderPath = args.length > 0 ? args[0] : "C:\\Users\\ayoub\\Pictures\\ScreenShots"; // Remplacez par le chemin de votre dossier d'images exemple C:\\Users\\name\\Pictures
         File dir = new File(folderPath);
         if (!dir.exists()) return;
         
